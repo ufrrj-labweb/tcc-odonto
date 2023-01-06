@@ -7,18 +7,26 @@
       <h2 class="title has-text-centered">{{ pergunta.titulo }}</h2>
 
       <p class="is-size-3 mb-5 has-text-justified">
-        {{ pergunta.pergunta }}
+        {{ pergunta.texto }}
       </p>
 
       <div class="image-container">
-        <img class="image has-image-centered" :src="pergunta.imagem_url" alt="">
+        <img class="image has-image-centered" :src="pergunta.url_imagem" alt="">
       </div>
 
-      <div class="opcoes-container buttons are-medium mt-6 is-justify-content-center">
-        <button class="button">Opção A</button>
-        <button class="button">Opção B</button>
-        <button class="button">Opção C</button>
-        <button class="button">Opção D</button>
+      <div 
+        
+        class="opcoes-container buttons are-medium mt-6 is-justify-content-center">
+        <button
+          @click="getPrimeiraPergunta()"
+          class="button">Início
+        </button>
+        <button 
+          v-for="(opcao, index) in pergunta.opcoes"
+          :key="index" 
+          @click="getProximaPergunta(opcao.proxima_pergunta)"
+          class="button">{{ opcao.opcao_texto }}
+        </button>
       </div>
     </div>
   </div>
@@ -31,15 +39,11 @@
 import { ref, onMounted } from 'vue';
 import { db } from '@/firebase'
 import { 
-  addDoc, collection, onSnapshot, 
-  deleteDoc, doc, updateDoc, getDocs,
-  query, orderBy, limit, where, getDoc
+  collection, getDocs, query, 
+  limit, where, getDoc, doc
 } from 'firebase/firestore'
 
 const perguntasRef = collection(db, "perguntas");
-const opcoesRef = collection(db, "opcoes");
-const grupoOpcoesRef = collection(db, "grupo_opcoes");
-const perguntasGrupoRef = collection(db, "perguntas_grupo");
 
 /*
   PERGUNTAS
@@ -51,68 +55,30 @@ const pergunta = ref('');
   get Primeira Pergunta
 */
 
-onMounted( async () => {
+onMounted( () => {
+  getPrimeiraPergunta()
+});
+
+const getPrimeiraPergunta = async () => {
   const primeiraPerguntaQuery = query(perguntasRef, where("is_inicio", "==", true), limit(1));
   const primeiraPerguntaQuerySnapshot = await getDocs(primeiraPerguntaQuery);
 
   primeiraPerguntaQuerySnapshot.forEach(async (primeiraPergunta) => {
-    
-    const perguntasGrupo = await getPerguntasGrupo(primeiraPergunta.id);
-    const opcoesIds = await getOpcoesGrupo(perguntasGrupo.id_grupo);
-    // const opcoes = await getOpcoes(opcoesIds);
 
-    
-
-    // const pergutasGrupoQuery = perguntasGrupoRef.where('id_pergunta', "==", primeiraPergunta.id).get();
-    // const pergutasGrupoQuery = ;
-
-    // console.log(primeiraPergunta.id)
-    // console.log(pergutasGrupoQuery)
-    // console.log(perguntasGrupo)
+    console.log(primeiraPergunta.data())
 
     pergunta.value = primeiraPergunta.data();
-  });  
-});
-
-/*
-  get perguntas grupos
-*/
-
-const getPerguntasGrupo = async (perguntaId) => {
-  // Faz a query
-  const pergutasGrupoQuery = query(perguntasGrupoRef, where('id_pergunta', "==", perguntaId), limit(1));
-
-  // Busca o resultado
-  const pergutasGrupoQuerySnapshot = await getDocs(pergutasGrupoQuery);
-
-  // retorna o resultado
-  return pergutasGrupoQuerySnapshot.docs[0].data()
+  }); 
 }
 
-const getOpcoesGrupo = async (grupoId) => {
-  const opcoesIds = [];
+const getProximaPergunta = async (idProximaPergunta) => {
+  const docRef = doc(db, "perguntas", idProximaPergunta);
+  const docSnap = await getDoc(docRef);
 
-  const OpcoesGrupoQuery = query(grupoOpcoesRef, where('id_grupo', "==", parseInt(grupoId)));
+  pergunta.value = docSnap.data();
 
-  // Busca o resultado
-  const OpcoesGrupoQuerySnapshot = await getDocs(OpcoesGrupoQuery);
-
-  // retorna o resultado
-  OpcoesGrupoQuerySnapshot.forEach((opcoesGrupos) => {
-    opcoesIds.push({
-      "id_opcao": opcoesGrupos.data().id_opcao, 
-      "proxima_pergunta": opcoesGrupos.data().proxima_pergunta
-    })
-  })
-
-  return opcoesIds
+  console.log(docSnap.data());
 }
-
-// const getOpcoes = async (opcoesIds) => {
-//   const opcoesIds = [];
-
-//   const OpcoesQuery = query(opcoesRef, where('id_grupo', "==", parseInt(grupoId)));
-// }
 
 </script>
 
