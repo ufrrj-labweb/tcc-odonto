@@ -31,9 +31,8 @@
             </div>
         </div>
         <footer class="card-footer">
-            <RouterLink to="#" class="card-footer-item">Editar</RouterLink>
-            <RouterLink to="#" class="card-footer-item">Clonar</RouterLink>
-            <RouterLink to="#" @click="apagarPergunta(pergunta.id)" class="card-footer-item delete-link">Delete</RouterLink>
+            <RouterLink :to="{name:'editarPergunta', params: {idPergunta : pergunta.id}}" class="card-footer-item">Editar</RouterLink>
+            <RouterLink to="#" @click="apagarPergunta(pergunta.id)" class="card-footer-item delete-link">Apagar</RouterLink>
         </footer>
       </div>
     </div>

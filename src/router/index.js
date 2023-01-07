@@ -35,6 +35,11 @@ const router = createRouter({
       name: 'novaPergunta',
       component: PerguntaView
     },
+    {
+      path: '/editar-pergunta/:idPergunta',
+      name: 'editarPergunta',
+      component: PerguntaView
+    },
     // {
     //   path: '/questionario',
     //   name: 'questionario',

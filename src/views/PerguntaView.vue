@@ -67,8 +67,11 @@
     </div>
 
     <div class="field is-grouped">
-      <div class="control">
+      <div class="control" v-if="!route.params.idPergunta">
         <button @click="adicionarNovaPergunta()" class="button">Cadastrar</button>
+      </div>
+      <div class="control" v-if="route.params.idPergunta">
+        <button @click="editarPergunta()" class="button">Salvar Edicao</button>
       </div>
       <div class="control">
         <RouterLink to="/dashboard" class="button is-danger">Cancelar</RouterLink>
@@ -81,10 +84,11 @@
 
 import { ref, onMounted } from 'vue';
 import { db } from '@/firebase'
-import { collection, getDocs, addDoc} from "firebase/firestore";
-import { RouterLink, useRouter } from 'vue-router'
+import { collection, getDocs, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { RouterLink, useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 
 const proximasPerguntas = ref([]);
 const formulario = ref({
@@ -101,8 +105,14 @@ const formulario = ref({
 })
 
 const perguntasRef = collection(db, "perguntas");
+let idPergunta = null
 
 onMounted( () => {
+  if(route.params.idPergunta) {
+    idPergunta = route.params.idPergunta
+    carregaPerguntaParaEdicao(idPergunta)
+  }
+
   getTodasPerguntas();
 });
 
@@ -114,7 +124,6 @@ const getTodasPerguntas = async () => {
 }
 
 const alterarProximaPerguntaDaOpcao = (event, index) => {
-  console.log(formulario.value);
   formulario.value.opcoes[index]['proxima_pergunta'] = event.target.value;
 }
 
@@ -127,12 +136,23 @@ const adicionarNovaOpcao = () => {
       opcao_texto: '',
       proxima_pergunta: ''
     })
-
-  console.log(formulario.value);
 }
 
 const adicionarNovaPergunta = async () => {
   await addDoc(perguntasRef, formulario.value);
+  router.push("/dashboard");
+}
+
+const carregaPerguntaParaEdicao = async (idPergunta) => {
+  const docRef = doc(db, "perguntas", idPergunta);
+  const docSnap = await getDoc(docRef);
+
+  formulario.value = docSnap.data();
+}
+
+const editarPergunta = async () => {
+  const docRef = doc(db, "perguntas", idPergunta);
+  await updateDoc(docRef, formulario.value);
   router.push("/dashboard");
 }
 </script>
