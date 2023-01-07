@@ -1,6 +1,138 @@
 <template>
-  <h1>PERGUNTAS</h1>
+  <div class="container">
+
+    <h1 class="title has-text-centered is-1 mt-4">Odonto App</h1>
+
+    <h2 class="title">NOVA PERGUNTA</h2>
+
+    <div class="field">
+      <label class="label">Nome da pergunta</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Insira o nome da pergunta" v-model="formulario.nome">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Título</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Insira o título da pergunta" v-model="formulario.titulo">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Conteúdo da pergunta</label>
+      <div class="control">
+        <textarea class="textarea" placeholder="Digite aqui o conteúdo da pergunta" v-model="formulario.texto"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Imagem</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Insira a URL da imagem" v-model="formulario.url_imagem">
+      </div>
+    </div>
+
+    <div
+      v-for="(opcao, index) in formulario.opcoes"
+      :key="index"
+      class="field">
+      <label class="label">Opcao</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Texto da opção" v-model="opcao.opcao_texto">
+      </div>
+
+      <label class="label">Próxima pergunta</label>
+      <div class="select">
+        <select @change="alterarProximaPerguntaDaOpcao($event, index)">
+          <option selected>Seleciona a próxima pergunta</option>
+          <option
+            v-for="proximaPergunta in proximasPerguntas"
+            :key="proximaPergunta.id"
+            :value="proximaPergunta.id"
+            :selected="opcao.proxima_pergunta === proximaPergunta.id"
+          >
+            {{ proximaPergunta.data().titulo }}
+          </option>
+        </select>
+      </div>
+
+      <div class="control">
+        <button class="button is-link" @click="removerOpcao(index)">Remover</button>
+      </div>
+    </div>
+
+    <div class="control">
+      <button class="button is-link" @click="adicionarNovaOpcao()">Adicionar</button>
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button @click="adicionarNovaPergunta()" class="button">Cadastrar</button>
+      </div>
+      <div class="control">
+        <RouterLink to="/dashboard" class="button is-danger">Cancelar</RouterLink>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script>
+<script setup>
+
+import { ref, onMounted } from 'vue';
+import { db } from '@/firebase'
+import { collection, getDocs, addDoc} from "firebase/firestore";
+import { RouterLink, useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const proximasPerguntas = ref([]);
+const formulario = ref({
+  nome: '',
+  texto: '',
+  titulo: '',
+  url_imagem: '',
+  opcoes: [
+    {
+      opcao_texto: '',
+      proxima_pergunta: ''
+    },
+  ]
+})
+
+const perguntasRef = collection(db, "perguntas");
+
+onMounted( () => {
+  getTodasPerguntas();
+});
+
+const getTodasPerguntas = async () => {
+  const querySnapshot = await getDocs(perguntasRef);
+  querySnapshot.forEach((doc) => {
+    proximasPerguntas.value.push(doc);
+  });
+}
+
+const alterarProximaPerguntaDaOpcao = (event, index) => {
+  console.log(formulario.value);
+  formulario.value.opcoes[index]['proxima_pergunta'] = event.target.value;
+}
+
+const removerOpcao = (index) => {
+  formulario.value.opcoes.splice(index, 1);
+}
+
+const adicionarNovaOpcao = () => {
+  formulario.value.opcoes.push({
+      opcao_texto: '',
+      proxima_pergunta: ''
+    })
+
+  console.log(formulario.value);
+}
+
+const adicionarNovaPergunta = async () => {
+  await addDoc(perguntasRef, formulario.value);
+  router.push("/dashboard");
+}
 </script>

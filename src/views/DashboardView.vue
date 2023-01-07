@@ -58,7 +58,6 @@ onMounted( () => {
 });
 
 const getTodasPerguntas = async () => {
-  let teste = [];
   const querySnapshot = await getDocs(perguntasRef);
   querySnapshot.forEach((doc) => {
     console.log(doc.id, " => ", doc.data());
