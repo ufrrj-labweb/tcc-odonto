@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import QuestionarioView from '../views/QuestionarioView.vue'
+import DashboardView from '../views/DashboardView.vue'
+import PerguntaView from '../views/PerguntaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +24,16 @@ const router = createRouter({
       path: '',
       name: 'questionario',
       component: QuestionarioView
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardView
+    },
+    {
+      path: '/nova-pergunta',
+      name: 'novaPergunta',
+      component: PerguntaView
     },
     // {
     //   path: '/questionario',
