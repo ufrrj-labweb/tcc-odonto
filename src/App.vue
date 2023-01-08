@@ -22,6 +22,7 @@ import { RouterView } from 'vue-router'
 
 <style>
 @import 'bulma/css/bulma.min.css';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
 
 body {
   margin: 0 auto;

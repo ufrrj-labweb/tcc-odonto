@@ -26,11 +26,32 @@
       </div>
     </div>
 
-    <div class="field">
+    <!-- <div class="field">
       <label class="label">Imagem</label>
       <div class="control">
         <input class="input" type="text" placeholder="Insira a URL da imagem" v-model="formulario.url_imagem">
       </div>
+    </div> -->
+
+    <div class="file has-name">
+      <label class="file-label">
+        <input class="file-input" type="file" name="resume" v-on:change="imagemSelecionada($event)">
+        <span class="file-cta">
+          <span class="file-icon">
+            <i class="fas fa-upload"></i>
+          </span>
+          <span class="file-label">
+            Escolha uma imagem...
+          </span>
+        </span>
+        <span class="file-name">
+          {{ arquivoImagem.nome_imagem ? arquivoImagem.nome_imagem : '...' }}
+        </span>
+      </label>
+    </div>
+
+    <div class="image-container">
+      <img class="image" :src="arquivoImagem.url_imagem" alt="">
     </div>
 
     <div
@@ -83,9 +104,10 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { db } from '@/firebase'
+import { db, storage } from '@/firebase'
 import { collection, getDocs, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { RouterLink, useRouter, useRoute } from 'vue-router'
+import { getStorage, ref as refStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const router = useRouter()
 const route = useRoute()
@@ -105,7 +127,9 @@ const formulario = ref({
 })
 
 const perguntasRef = collection(db, "perguntas");
+const storageRef = ref(storage);
 let idPergunta = null
+const arquivoImagem = ref({})
 
 onMounted( () => {
   if(route.params.idPergunta) {
@@ -139,8 +163,20 @@ const adicionarNovaOpcao = () => {
 }
 
 const adicionarNovaPergunta = async () => {
+  await enviarImagem();
+
   await addDoc(perguntasRef, formulario.value);
   router.push("/dashboard");
+}
+
+const enviarImagem = async () => {
+  const extensaoImagem = arquivoImagem.value.type.split('/')[1]
+  const nomeDaImagem = Date.now() + extensaoImagem
+  const mountainsRef = refStorage(storage, nomeDaImagem);
+
+  await uploadBytes(mountainsRef, arquivoImagem.value).then( async () => {
+    formulario.value.url_imagem = await getDownloadURL(mountainsRef)
+  });
 }
 
 const carregaPerguntaParaEdicao = async (idPergunta) => {
@@ -148,11 +184,21 @@ const carregaPerguntaParaEdicao = async (idPergunta) => {
   const docSnap = await getDoc(docRef);
 
   formulario.value = docSnap.data();
+  arquivoImagem.value.url_imagem = docSnap.data().url_imagem
 }
 
 const editarPergunta = async () => {
+
+  await enviarImagem();
+
   const docRef = doc(db, "perguntas", idPergunta);
   await updateDoc(docRef, formulario.value);
   router.push("/dashboard");
+}
+
+const imagemSelecionada = (event) => {
+  const imagem = event.target.files[0]
+  arquivoImagem.value = imagem
+  arquivoImagem.value.url_imagem = URL.createObjectURL(imagem)
 }
 </script>
