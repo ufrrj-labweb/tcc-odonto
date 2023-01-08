@@ -39,8 +39,8 @@ import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router'
 import { db } from '@/firebase'
 import { 
-  collection, getDocs, 
-  deleteDoc, doc
+  collection, getDocs, query,
+  deleteDoc, doc, orderBy
 } from 'firebase/firestore'
 
 /**
@@ -58,7 +58,8 @@ onMounted( () => {
 });
 
 const getTodasPerguntas = async () => {
-  const querySnapshot = await getDocs(perguntasRef);
+  const queryPerguntas = query(perguntasRef, orderBy("data_criacao", "desc"));
+  const querySnapshot = await getDocs(queryPerguntas);
   querySnapshot.forEach((doc) => {
     perguntas.value.push(doc);
   });
