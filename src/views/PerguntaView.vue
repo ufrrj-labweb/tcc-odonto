@@ -65,7 +65,7 @@
             :value="proximaPergunta.id"
             :selected="opcao.proxima_pergunta === proximaPergunta.id"
           >
-            {{ proximaPergunta.data().titulo }}
+            {{ proximaPergunta.data().nome }}
           </option>
         </select>
       </div>
