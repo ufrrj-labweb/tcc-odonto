@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/tcc-odonto',
+  publicPath: '/tcc-odonto/',
 }
