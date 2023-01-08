@@ -39,12 +39,18 @@ import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router'
 import { db } from '@/firebase'
 import { 
-  collection, getDocs, query, 
-  deleteDoc, where, getDoc, doc
+  collection, getDocs, 
+  deleteDoc, doc
 } from 'firebase/firestore'
 
+/**
+ * Referências do dashboard
+ */
 const perguntas = ref([]);
 
+/**
+ * Referências do firebase
+ */
 const perguntasRef = collection(db, "perguntas");
 
 onMounted( () => {
@@ -54,8 +60,6 @@ onMounted( () => {
 const getTodasPerguntas = async () => {
   const querySnapshot = await getDocs(perguntasRef);
   querySnapshot.forEach((doc) => {
-    console.log(doc.id, " => ", doc.data());
-
     perguntas.value.push(doc);
   });
 }

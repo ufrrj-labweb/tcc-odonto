@@ -96,15 +96,25 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { db, storage } from '@/firebase'
-import { collection, getDocs, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
-import { RouterLink, useRouter, useRoute } from 'vue-router'
-import { getStorage, ref as refStorage, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { db, storage } from '@/firebase';
+import { RouterLink, useRouter, useRoute } from 'vue-router';
+import { 
+  collection, getDocs, addDoc, 
+  doc, getDoc, updateDoc 
+} from "firebase/firestore";
+import { 
+  ref as refStorage, uploadBytes, 
+  getDownloadURL, deleteObject 
+} from "firebase/storage";
 
 const router = useRouter()
 const route = useRoute()
 
+/*
+  REFERÊNCIAS DO FORMULÁRIO
+*/
 const proximasPerguntas = ref([]);
+const arquivoImagem = ref({})
 const formulario = ref({
   nome: '',
   texto: '',
@@ -119,20 +129,29 @@ const formulario = ref({
   ]
 })
 
+/*
+  REFERÊNCIAS DO FIREBASE
+*/
 const perguntasRef = collection(db, "perguntas");
-const storageRef = ref(storage);
+
+/*
+  OUTRAS VARIÁVEIS
+*/
 let idPergunta = null
-const arquivoImagem = ref({})
+
 
 onMounted( () => {
   if(route.params.idPergunta) {
-    idPergunta = route.params.idPergunta
-    carregaPerguntaParaEdicao(idPergunta)
+    idPergunta = route.params.idPergunta;
+    carregaPerguntaParaEdicao(idPergunta);
   }
 
   getTodasPerguntas();
 });
 
+/*
+  GET TODAS AS PERGUNTAS
+*/
 const getTodasPerguntas = async () => {
   const querySnapshot = await getDocs(perguntasRef);
   querySnapshot.forEach((doc) => {
@@ -140,19 +159,37 @@ const getTodasPerguntas = async () => {
   });
 }
 
+/**
+ * ALTERA PROXIMA PERGUNTA
+ */
 const alterarProximaPerguntaDaOpcao = (event, index) => {
   formulario.value.opcoes[index]['proxima_pergunta'] = event.target.value;
 }
 
+/**
+ * FUNCOES QUE GERENCIAM AS OPCOES
+ */
 const removerOpcao = (index) => {
   formulario.value.opcoes.splice(index, 1);
 }
 
 const adicionarNovaOpcao = () => {
   formulario.value.opcoes.push({
-      opcao_texto: '',
-      proxima_pergunta: ''
-    })
+    opcao_texto: '',
+    proxima_pergunta: ''
+  });
+}
+
+/**
+ * FUNCOES QUE SE COMUNICAM COM O FIREBASE
+ */
+
+const carregaPerguntaParaEdicao = async (idPergunta) => {
+  const docRef = doc(db, "perguntas", idPergunta);
+  const docSnap = await getDoc(docRef);
+
+  formulario.value = docSnap.data();
+  arquivoImagem.value.url_imagem = docSnap.data().url_imagem;
 }
 
 const adicionarNovaPergunta = async () => {
@@ -164,29 +201,7 @@ const adicionarNovaPergunta = async () => {
   router.push("/dashboard");
 }
 
-const enviarImagem = async () => {
-  const extensaoImagem = arquivoImagem.value.type.split('/')[1]
-  const nomeDaImagem = Date.now() + extensaoImagem
-  const mountainsRef = refStorage(storage, nomeDaImagem);
-
-  await uploadBytes(mountainsRef, arquivoImagem.value).then( async () => {
-    formulario.value.url_imagem = await getDownloadURL(mountainsRef)
-    formulario.value.nome_imagem_firestore = nomeDaImagem
-  });
-}
-
-const carregaPerguntaParaEdicao = async (idPergunta) => {
-  const docRef = doc(db, "perguntas", idPergunta);
-  const docSnap = await getDoc(docRef);
-
-  formulario.value = docSnap.data();
-  arquivoImagem.value.url_imagem = docSnap.data().url_imagem
-}
-
 const editarPergunta = async () => {
-
-  console.log(arquivoImagem.value.type)
-
   if("type" in arquivoImagem.value){
     await apagarImagemAntiga();
     await enviarImagem();
@@ -195,6 +210,20 @@ const editarPergunta = async () => {
   const docRef = doc(db, "perguntas", idPergunta);
   await updateDoc(docRef, formulario.value);
   router.push("/dashboard");
+}
+
+/**
+ * FUNÇOES QUE MANIPULAM A IMAGEM
+ */
+const enviarImagem = async () => {
+  const extensaoImagem = arquivoImagem.value.type.split('/')[1];
+  const nomeDaImagem = Date.now() + extensaoImagem;
+  const mountainsRef = refStorage(storage, nomeDaImagem);
+
+  await uploadBytes(mountainsRef, arquivoImagem.value).then( async () => {
+    formulario.value.url_imagem = await getDownloadURL(mountainsRef);
+    formulario.value.nome_imagem_firestore = nomeDaImagem;
+  });
 }
 
 const apagarImagemAntiga = async () => {

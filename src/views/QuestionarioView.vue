@@ -14,9 +14,7 @@
         <img class="image has-image-centered" :src="pergunta.url_imagem" alt="">
       </div>
 
-      <div 
-        
-        class="opcoes-container buttons are-medium mt-6 is-justify-content-center">
+      <div class="opcoes-container buttons are-medium mt-6 is-justify-content-center">
         <button
           @click="getPrimeiraPergunta()"
           class="button">Início
@@ -44,16 +42,7 @@ import {
 } from 'firebase/firestore'
 
 const perguntasRef = collection(db, "perguntas");
-
-/*
-  PERGUNTAS
-*/
-
 const pergunta = ref('');
-
-/*
-  get Primeira Pergunta
-*/
 
 onMounted( () => {
   getPrimeiraPergunta()
@@ -64,9 +53,6 @@ const getPrimeiraPergunta = async () => {
   const primeiraPerguntaQuerySnapshot = await getDocs(primeiraPerguntaQuery);
 
   primeiraPerguntaQuerySnapshot.forEach(async (primeiraPergunta) => {
-
-    console.log(primeiraPergunta.data())
-
     pergunta.value = primeiraPergunta.data();
   }); 
 }
@@ -76,10 +62,7 @@ const getProximaPergunta = async (idProximaPergunta) => {
   const docSnap = await getDoc(docRef);
 
   pergunta.value = docSnap.data();
-
-  console.log(docSnap.data());
 }
-
 </script>
 
 <style>
