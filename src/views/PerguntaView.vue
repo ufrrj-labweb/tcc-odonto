@@ -197,7 +197,7 @@ const adicionarNovaPergunta = async () => {
     await enviarImagem();
   }
 
-  formulatio.value.data_criacao = Date.now()
+  formulario.value.data_criacao = Date.now()
 
   await addDoc(perguntasRef, formulario.value);
   router.push("/dashboard");
