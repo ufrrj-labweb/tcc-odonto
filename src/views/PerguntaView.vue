@@ -26,13 +26,6 @@
       </div>
     </div>
 
-    <!-- <div class="field">
-      <label class="label">Imagem</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="Insira a URL da imagem" v-model="formulario.url_imagem">
-      </div>
-    </div> -->
-
     <div class="file has-name">
       <label class="file-label">
         <input class="file-input" type="file" name="resume" v-on:change="imagemSelecionada($event)">
@@ -57,13 +50,12 @@
     <div
       v-for="(opcao, index) in formulario.opcoes"
       :key="index"
-      class="field">
-      <label class="label">Opcao</label>
-      <div class="control">
+      class="field is-grouped mt-5"
+    >
+      <div class="control is-expanded">
         <input class="input" type="text" placeholder="Texto da opção" v-model="opcao.opcao_texto">
       </div>
 
-      <label class="label">Próxima pergunta</label>
       <div class="select">
         <select @change="alterarProximaPerguntaDaOpcao($event, index)">
           <option selected>Seleciona a próxima pergunta</option>
@@ -78,16 +70,16 @@
         </select>
       </div>
 
-      <div class="control">
-        <button class="button is-link" @click="removerOpcao(index)">Remover</button>
+      <div class="control ml-3">
+        <button class="button is-link" @click="removerOpcao(index)">Remover opcao</button>
       </div>
     </div>
 
-    <div class="control">
-      <button class="button is-link" @click="adicionarNovaOpcao()">Adicionar</button>
+    <div class="control mt-5">
+      <button class="button is-link" @click="adicionarNovaOpcao()">Adicionar opcao</button>
     </div>
 
-    <div class="field is-grouped">
+    <div class="field is-grouped is-grouped-right mt-6">
       <div class="control" v-if="!route.params.idPergunta">
         <button @click="adicionarNovaPergunta()" class="button">Cadastrar</button>
       </div>
@@ -95,7 +87,7 @@
         <button @click="editarPergunta()" class="button">Salvar Edicao</button>
       </div>
       <div class="control">
-        <RouterLink to="/dashboard" class="button is-danger">Cancelar</RouterLink>
+        <RouterLink to="/dashboard" class="button is-danger is-light">Cancelar</RouterLink>
       </div>
     </div>
   </div>
@@ -107,7 +99,7 @@ import { ref, onMounted } from 'vue';
 import { db, storage } from '@/firebase'
 import { collection, getDocs, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { RouterLink, useRouter, useRoute } from 'vue-router'
-import { getStorage, ref as refStorage, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref as refStorage, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
 const router = useRouter()
 const route = useRoute()
@@ -118,6 +110,7 @@ const formulario = ref({
   texto: '',
   titulo: '',
   url_imagem: '',
+  nome_imagem_firestore: '',
   opcoes: [
     {
       opcao_texto: '',
@@ -163,7 +156,9 @@ const adicionarNovaOpcao = () => {
 }
 
 const adicionarNovaPergunta = async () => {
-  await enviarImagem();
+  if(Object.keys(arquivoImagem.value).length > 0){
+    await enviarImagem();
+  }
 
   await addDoc(perguntasRef, formulario.value);
   router.push("/dashboard");
@@ -176,6 +171,7 @@ const enviarImagem = async () => {
 
   await uploadBytes(mountainsRef, arquivoImagem.value).then( async () => {
     formulario.value.url_imagem = await getDownloadURL(mountainsRef)
+    formulario.value.nome_imagem_firestore = nomeDaImagem
   });
 }
 
@@ -189,11 +185,21 @@ const carregaPerguntaParaEdicao = async (idPergunta) => {
 
 const editarPergunta = async () => {
 
-  await enviarImagem();
+  console.log(arquivoImagem.value.type)
+
+  if("type" in arquivoImagem.value){
+    await apagarImagemAntiga();
+    await enviarImagem();
+  }  
 
   const docRef = doc(db, "perguntas", idPergunta);
   await updateDoc(docRef, formulario.value);
   router.push("/dashboard");
+}
+
+const apagarImagemAntiga = async () => {
+  const imagemParaApagarRef = refStorage(storage, formulario.value.nome_imagem_firestore);
+  await deleteObject(imagemParaApagarRef)
 }
 
 const imagemSelecionada = (event) => {
@@ -202,3 +208,9 @@ const imagemSelecionada = (event) => {
   arquivoImagem.value.url_imagem = URL.createObjectURL(imagem)
 }
 </script>
+
+<style>
+.container {
+  padding: 10px;
+}
+</style>

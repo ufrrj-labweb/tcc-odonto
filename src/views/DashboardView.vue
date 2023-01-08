@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title has-text-centered is-1 mt-4">DASHBOARD</h1>
 
-    <RouterLink to="/nova-pergunta" class="button">Adicionar</RouterLink>
+    <RouterLink to="/nova-pergunta" class="button is-large mt-6 mb-6 is-fullwidth">Adicionar nova pergunta</RouterLink>
 
     <div class="columns is-multiline is-centered">
       <div 
@@ -11,13 +11,8 @@
         class="card column is-one-fifth">
         <header class="card-header">
             <p class="card-header-title">
-            {{ pergunta.data().nome }}
+              {{ pergunta.data().nome }}
             </p>
-            <button class="card-header-icon" aria-label="more options">
-            <span class="icon">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-            </span>
-            </button>
         </header>
         <div class="card-content">
             <div class="content">
