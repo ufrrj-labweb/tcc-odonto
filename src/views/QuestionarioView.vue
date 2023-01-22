@@ -1,12 +1,9 @@
 <template>
-  <div class="container">
-    
-    <h1 class="title has-text-centered is-1 mt-4">Odonto App</h1>
-    
-    <div class="box mb-6">
+  <div class="container content">
+    <div class="box">
       <h2 class="title has-text-centered">{{ pergunta.titulo }}</h2>
 
-      <p class="is-size-3 mb-5 has-text-justified">
+      <p class="is-size-3 mb-5 has-text-justified texto">
         {{ pergunta.texto }}
       </p>
 
@@ -54,6 +51,7 @@ const getPrimeiraPergunta = async () => {
 
   primeiraPerguntaQuerySnapshot.forEach(async (primeiraPergunta) => {
     pergunta.value = primeiraPergunta.data();
+    // pergunta.value.texto = pergunta.value.texto.replace(/(?:\r\n|\r|\n)/g, '<br>')
   }); 
 }
 
@@ -62,6 +60,8 @@ const getProximaPergunta = async (idProximaPergunta) => {
   const docSnap = await getDoc(docRef);
 
   pergunta.value = docSnap.data();
+
+  // pergunta.value.texto = pergunta.value.texto.replace(/(?:\r\n|\r|\n)/g, '<br>')
 }
 </script>
 
@@ -71,15 +71,19 @@ const getProximaPergunta = async (idProximaPergunta) => {
   padding: 20px 80px;
 }
 
-.button {
-  background-color: #E26D5A;
+.button, .button:active, .button:visited, .button:focus {
+  background-color: #0f3b8c;
   color: #FDFDFF
 }
 
 .button:hover {
-  background-color: #FDFDFF;
-  color: #E26D5A;
-  border-color: #E26D5A;
+  background-color: #0f3b8c;
+  color: #ffcc29;
+  border-color: #FDFDFF;
+}
+
+.texto {
+  white-space: pre-line;
 }
 </style>
 

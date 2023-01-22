@@ -71,12 +71,12 @@
       </div>
 
       <div class="control ml-3">
-        <button class="button is-link" @click="removerOpcao(index)">Remover opcao</button>
+        <button class="button" @click="removerOpcao(index)">Remover opcao</button>
       </div>
     </div>
 
     <div class="control mt-5">
-      <button class="button is-link" @click="adicionarNovaOpcao()">Adicionar opcao</button>
+      <button class="button" @click="adicionarNovaOpcao()">Adicionar opcao</button>
     </div>
 
     <div class="field is-grouped is-grouped-right mt-6">
@@ -243,5 +243,16 @@ const imagemSelecionada = (event) => {
 <style>
 .container {
   padding: 10px;
+}
+
+.button, .button:active, .button:visited, .button:focus {
+  background-color: #0f3b8c;
+  color: #FDFDFF
+}
+
+.button:hover {
+  background-color: #0f3b8c;
+  color: #ffcc29;
+  border-color: #FDFDFF;
 }
 </style>

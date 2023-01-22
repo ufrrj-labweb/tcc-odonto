@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer mt-auto">
+  <footer class="footer">
     <div class="container">
       <div class="columns">
         <div class="column">
@@ -25,7 +25,7 @@
               <a href="https://google.com" target="_blank">
                 <img
                   title="Mariana Sancas | Doutoranda"
-                  src="@/assets/images/equipe/user.png"
+                  src="@/assets/images/equipe/mariana_sancas.png"
                 >
               </a>
             </figure>
@@ -33,7 +33,7 @@
               <a href="https://google.com" target="_blank">
                 <img
                   title="Maysa Duarte | Pós-doutoranda"
-                  src="@/assets/images/equipe/user.png"
+                  src="@/assets/images/equipe/maysa_duarte.png"
                 >
               </a>
             </figure>
@@ -41,7 +41,7 @@
               <a href="https://google.com" target="_blank">
                 <img
                   title="Laura Primo | Professora Associada"
-                  src="@/assets/images/equipe/user.png"
+                  src="@/assets/images/equipe/laura_primo.png"
                 >
               </a>
             </figure>
@@ -54,7 +54,7 @@
               <a href="https://portal.ufrrj.br/" target="_blank">
               <img 
                 title="UFRRJ | Universidade Federal Rural do Rio de Janeiro"
-                src="@/assets/images/logos/rural_logo.png"
+                src="@/assets/images/logos/rural_logo_branco.png"
               >
               </a>
             </figure>
@@ -62,7 +62,7 @@
               <a href="https://ufrj.br/" target="_blank">
                 <img 
                   title="UFRJ | Universidade Federal do Rio de Janeiro"
-                  src="@/assets/images/logos/ufrj_logo.png"
+                  src="@/assets/images/logos/ufrj_logo_branco.png"
                 >
               </a>
             </figure>
@@ -82,9 +82,17 @@
 </script>
 
 <style scoped>
-/* footer {
-  margin-top: auto;
-} */
+footer {
+  background-color: #0f3b8c;
+}
+
+h2, p, p>* {
+  color: #fff;
+}
+
+a:hover {
+  color: #ffcc29
+}
 
 .faculdades, .equipe {
   display: flex;
