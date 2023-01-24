@@ -1,5 +1,5 @@
 <template>
-  <div class="container content">
+  <div class="questionario">
     <div class="box">
       <h2 class="title has-text-centered">{{ pergunta.titulo }}</h2>
 
@@ -68,7 +68,6 @@ const getProximaPergunta = async (idProximaPergunta) => {
 <style>
 .box {
   background-color: #FDFDFF;
-  padding: 20px 80px;
 }
 
 .button, .button:active, .button:visited, .button:focus {
@@ -84,6 +83,18 @@ const getProximaPergunta = async (idProximaPergunta) => {
 
 .texto {
   white-space: pre-line;
+}
+
+@media (max-width: 600px) {
+  .texto {
+    font-size: 1.2rem !important;
+  }
+}
+
+.questionario {
+  max-width: 1000px;
+  align-self: center;
+  display: inherit;
 }
 </style>
 
