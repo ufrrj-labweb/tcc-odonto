@@ -1,6 +1,15 @@
 <template>
   <div class="questionario">
     <div class="box">
+
+      <div class="botao-inicio mb-2">
+        <button
+          @click="getPrimeiraPergunta()"
+          class="button" title="Início">
+          <i class="fa-solid fa-house"></i>
+        </button>
+      </div>
+
       <h2 class="title has-text-centered">{{ pergunta.titulo }}</h2>
 
       <p class="is-size-3 mb-5 has-text-justified texto">
@@ -12,10 +21,6 @@
       </div>
 
       <div class="opcoes-container buttons are-medium mt-6 is-justify-content-center">
-        <button
-          @click="getPrimeiraPergunta()"
-          class="button">Início
-        </button>
         <button 
           v-for="(opcao, index) in pergunta.opcoes"
           :key="index" 

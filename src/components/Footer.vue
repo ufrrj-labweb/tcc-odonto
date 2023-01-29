@@ -100,6 +100,7 @@
 <style scoped>
 footer {
   background-color: #0f3b8c;
+  padding-bottom: 1.5rem;
 }
 
 h2, p, p>* {
