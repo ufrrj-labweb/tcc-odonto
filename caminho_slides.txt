@@ -1,3 +1,9 @@
+slide_2
+-- Próximo -------- instrucao
+
+instrucao
+-- Próximo -------- slide_8
+
 slide_8
 -- Atualmente------ slide_26
 -- Anteriormente--- slide_38

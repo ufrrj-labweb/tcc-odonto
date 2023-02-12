@@ -246,12 +246,12 @@ const imagemSelecionada = (event) => {
 }
 
 .button, .button:active, .button:visited, .button:focus {
-  background-color: #0f3b8c;
+  background-color: #008f4f;
   color: #FDFDFF
 }
 
 .button:hover {
-  background-color: #0f3b8c;
+  background-color: #008f4f;
   color: #ffcc29;
   border-color: #FDFDFF;
 }

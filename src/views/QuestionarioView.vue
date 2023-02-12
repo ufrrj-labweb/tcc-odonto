@@ -1,6 +1,6 @@
 <template>
   <div class="questionario">
-    <div class="box">
+    <div class="box my-4">
 
       <div class="botao-inicio mb-2">
         <button
@@ -12,8 +12,8 @@
 
       <h2 class="title has-text-centered">{{ pergunta.titulo }}</h2>
 
-      <p class="is-size-3 mb-5 has-text-justified texto">
-        {{ pergunta.texto }}
+      <p class="is-size-3 mb-5 has-text-justified texto" 
+        v-html="pergunta.texto">
       </p>
 
       <div class="image-container">
@@ -56,7 +56,6 @@ const getPrimeiraPergunta = async () => {
 
   primeiraPerguntaQuerySnapshot.forEach(async (primeiraPergunta) => {
     pergunta.value = primeiraPergunta.data();
-    // pergunta.value.texto = pergunta.value.texto.replace(/(?:\r\n|\r|\n)/g, '<br>')
   }); 
 }
 
@@ -65,8 +64,6 @@ const getProximaPergunta = async (idProximaPergunta) => {
   const docSnap = await getDoc(docRef);
 
   pergunta.value = docSnap.data();
-
-  // pergunta.value.texto = pergunta.value.texto.replace(/(?:\r\n|\r|\n)/g, '<br>')
 }
 </script>
 
@@ -76,12 +73,12 @@ const getProximaPergunta = async (idProximaPergunta) => {
 }
 
 .button, .button:active, .button:visited, .button:focus {
-  background-color: #0f3b8c;
+  background-color: #008f4f;
   color: #FDFDFF
 }
 
 .button:hover {
-  background-color: #0f3b8c;
+  background-color: #008f4f;
   color: #ffcc29;
   border-color: #FDFDFF;
 }
@@ -101,6 +98,16 @@ const getProximaPergunta = async (idProximaPergunta) => {
   align-self: center;
   display: inherit;
 }
+
+.referencia {
+  font-size: 15px;
+}
+
+.referencia > p {
+  white-space: normal;
+}
+
+
 </style>
 
 

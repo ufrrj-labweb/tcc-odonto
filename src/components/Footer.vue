@@ -49,7 +49,7 @@
               <a href="http://lattes.cnpq.br/5436324394362565" target="_blank">
                 <img
                   title="Maysa Duarte | Pós-doutoranda"
-                  src="@/assets/images/equipe/maysa_duarte.png"
+                  src="@/assets/images/equipe/maysa_duarte.jpg"
                 >
               </a>
             </figure>
@@ -99,7 +99,7 @@
 
 <style scoped>
 footer {
-  background-color: #0f3b8c;
+  background-color: #008f4f;
   padding-bottom: 1.5rem;
 }
 

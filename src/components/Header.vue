@@ -12,7 +12,7 @@
 
 <style scoped>
 header {
-  background-color: #0f3b8c;
+  background-color: #008f4f;
 }
 
 h1, p, p>* {
