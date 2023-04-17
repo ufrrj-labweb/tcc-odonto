@@ -5,54 +5,14 @@
         <div class="column">
           <h2 class="title has-text-centered is-size-3">Equipe: </h2>
           <div class="equipe">
-            <figure class="image is-128x128 has-image-centered">
-              <a href="https://www.linkedin.com/in/maxsantos97/" target="_blank">
-                <img
-                  title="Max Santos | Desenvolvedor"
-                  src="@/assets/images/equipe/max_santos.jpeg"
-                >
-              </a>
-            </figure>
-            <figure class="image is-128x128 has-image-centered">
-              <a href="http://lattes.cnpq.br/9941773528712076" target="_blank">
-                <img
-                  title="Tiago França | Orientador"
-                  src="@/assets/images/equipe/tiago_franca.jpeg"
-                >
-              </a>
-            </figure>
-            <figure class="image is-128x128 has-image-centered">
-              <a href="http://lattes.cnpq.br/8813744643679880" target="_blank">
-                <img
-                  title="Adilis França | Doutoranda"
-                  src="@/assets/images/equipe/adilis_franca.jpg"
-                >
-              </a>
-            </figure>
-            <figure class="image is-128x128 has-image-centered">
-              <a href="http://lattes.cnpq.br/8258110098411280" target="_blank">
-                <img
-                  title="Laura Primo | Professora Associada"
-                  src="@/assets/images/equipe/laura_primo.png"
-                >
-              </a>
-            </figure>
-            <figure class="image is-128x128 has-image-centered">
-              <a href="http://lattes.cnpq.br/8945163050246047" target="_blank">
-                <img
-                  title="Mariana Sancas | Doutoranda"
-                  src="@/assets/images/equipe/mariana_sancas.png"
-                >
-              </a>
-            </figure>
-            <figure class="image is-128x128 has-image-centered">
-              <a href="http://lattes.cnpq.br/5436324394362565" target="_blank">
-                <img
-                  title="Maysa Duarte | Pós-doutoranda"
-                  src="@/assets/images/equipe/maysa_duarte.jpg"
-                >
-              </a>
-            </figure>
+            <ul>
+              <li><a href="https://www.linkedin.com/in/maxsantos97/" target="_blank">Max Santos - Desenvolvedor</a></li>
+              <li><a href="http://lattes.cnpq.br/9941773528712076" target="_blank">Tiago França - Orientador</a></li>
+              <li><a href="http://lattes.cnpq.br/8813744643679880" target="_blank">Adilis França - Doutora</a></li>
+              <li><a href="http://lattes.cnpq.br/8258110098411280" target="_blank">Laura Primo - Doutora</a></li>
+              <li><a href="http://lattes.cnpq.br/8945163050246047" target="_blank">Mariana Sancas - Doutoranda</a></li>
+              <li><a href="http://lattes.cnpq.br/5436324394362565" target="_blank">Maysa Duarte - Doutora</a></li>
+            </ul>
           </div>
         </div>
         <div class="column">
@@ -66,19 +26,20 @@
               >
               </a>
             </figure>
-            <figure class="image is-128x128">
-              <a href="https://ufrj.br/" target="_blank">
-                <img 
-                  title="UFRJ | Universidade Federal do Rio de Janeiro"
-                  src="@/assets/images/logos/ufrj_logo_branco.png"
-                >
-              </a>
-            </figure>
+
             <figure class="image is-128x128">
               <a href="https://www.uerj.br/" target="_blank">
                 <img 
                   title="UERJ | Universidade do Estado do Rio de Janeiro"
                   src="@/assets/images/logos/uerj_logo_branco.png"
+                >
+              </a>
+            </figure>
+            <figure class="image is-128x128">
+              <a href="https://ufrj.br/" target="_blank">
+                <img 
+                  title="UFRJ | Universidade Federal do Rio de Janeiro"
+                  src="@/assets/images/logos/ufrj_logo_branco.png"
                 >
               </a>
             </figure>
@@ -107,19 +68,18 @@ h2, p, p>* {
   color: #fff;
 }
 
-a:hover {
-  color: #ffcc29
-}
-
 .faculdades, .equipe {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: last baseline;
 }
 
-.equipe {
-  justify-content: space-between;
-  gap: 10px;
+.equipe a {
+  color: #fff;
+}
+
+.equipe a:hover {
+  color: #ffcc29
 }
 </style>
