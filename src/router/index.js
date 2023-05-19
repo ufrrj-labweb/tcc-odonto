@@ -43,7 +43,7 @@ const router = createRouter({
       component: ThreadsView,
       beforeEnter: (to, from, next) => {
         const user = store.getters.getUser 
-        if (user.role == 'admin') {
+        if (user) {
           next()
         } else {
           next("/dashboard")
