@@ -1,10 +1,9 @@
 <template>
   <div class="container">
-    <h1 class="title has-text-centered is-1 mt-4">DASHBOARD</h1>
+    <h1 class="title has-text-centered is-1 mt-4">Trabalhos</h1>
 
-    <RouterLink to="/nova-pergunta" style="margin-left:10%;" class="button has-text-centered mt-6 mb-6">Adicionar nova pergunta</RouterLink>
-    <RouterLink v-if="userRole == 'admin'" style="margin-left:2%;" to="/threads" class="button has-text-centered mt-6 mb-6">Trabalhos</RouterLink>
-    <RouterLink to="/logout" style="margin-left:40%; background-color: rgb(153, 4, 4);" class="button has-text-centered mt-6 mb-6">Sair</RouterLink>
+    <RouterLink to="/nova-pergunta" style="margin-left:10%;" class="button has-text-centered mt-6 mb-6">Adicionar novo trabalho</RouterLink>
+    <RouterLink to="/logout" style="margin-left:50%; background-color: rgb(153, 4, 4);" class="button has-text-centered mt-6 mb-6">Sair</RouterLink>
 
     <div class="columns is-multiline is-centered">
       <div 
@@ -28,7 +27,7 @@
             </div>
         </div>
         <footer class="card-footer">
-            <RouterLink :to="{name:'editarPergunta', params: {idPergunta : pergunta.id}}" class="card-footer-item">Editar</RouterLink>
+            <RouterLink to="/dashboard" class="card-footer-item">Editar</RouterLink>
             <RouterLink to="#" @click="apagarPergunta(pergunta.id)" class="card-footer-item delete-link">Apagar</RouterLink>
         </footer>
       </div>
@@ -44,14 +43,11 @@ import {
   collection, getDocs, query,
   deleteDoc, doc, orderBy
 } from 'firebase/firestore'
-import store from '../store';
 
 /**
  * Referências do dashboard
  */
 const perguntas = ref([]);
-
-const userRole = store.getters.getUser.role;
 
 /**
  * Referências do firebase

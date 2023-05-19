@@ -41,6 +41,11 @@ import { getAuth , signInWithEmailAndPassword,
   createUserWithEmailAndPassword  } from "firebase/auth";
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { db } from '@/firebase'
+import { 
+  collection, getDocs, addDoc, 
+  doc, getDoc, updateDoc 
+} from "firebase/firestore";
 
 
 /*const users = collection(db, "users");
@@ -60,7 +65,14 @@ let formulario = reactive({
     try {
     const userCredential = await createUserWithEmailAndPassword(
       auth, formulario.email, formulario.password);
+
     const user = userCredential.user;
+    const userData = JSON.parse(JSON.stringify(user));
+    const usersRef = collection(db, "users");
+    userData.displayName = formulario.name;
+    userData.role = 'user';
+    await addDoc(usersRef, userData);
+
     console.log('Usuário criado:', user);
     fazerLogin(formulario.email, formulario.password)
   } catch (error) {
@@ -74,7 +86,7 @@ const fazerLogin = async (email, password) => {
     const user = userCredential.user;
     console.log('Usuário logado:', user);
     store.dispatch('setUser', user);
-    router.push("/dashboard");
+    router.push("/threads");
   } catch (error) {
     console.log(error);
   }

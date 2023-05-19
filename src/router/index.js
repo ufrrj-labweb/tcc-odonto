@@ -5,7 +5,8 @@ import DashboardView from '../views/DashboardView.vue'
 import PerguntaView from '../views/PerguntaView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import SigninView from '../views/SigninView.vue'
-import store from '../store' // Importe o store Vuex aqui
+import ThreadsView from '../views/ThreadsView.vue'
+import store from '../store'
 import createPersistedState from 'vuex-persistedstate';
 
 const auth = getAuth();
@@ -23,7 +24,7 @@ const router = createRouter({
       name: 'dashboard',
       component: DashboardView,
       beforeEnter: (to, from, next) => {
-        const user = store.getters.getUser // Acessar getters do store Vuex
+        const user = store.getters.getUser 
         if (user) {
           next()
         } else {
@@ -35,6 +36,19 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      path: '/threads',
+      name: 'ThreadsView',
+      component: ThreadsView,
+      beforeEnter: (to, from, next) => {
+        const user = store.getters.getUser 
+        if (user.role == 'admin') {
+          next()
+        } else {
+          next("/dashboard")
+        }
+      }
     },
     {
       path: '/signin',
