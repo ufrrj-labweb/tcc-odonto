@@ -3,11 +3,15 @@
     <div class="container">
       <div class="columns">
         <div class="column">
-          <h2 class="title has-text-centered is-size-3">Equipe: </h2>
+          <h2 class="title has-text-centered is-size-3">Quem somos? </h2>
           <div class="equipe">
             <ul>
+              <h3 class="title is-size-4">Equipe técnica:</h3>
               <li><a href="https://www.linkedin.com/in/maxsantos97/" target="_blank">Max Santos - Desenvolvedor</a></li>
               <li><a href="http://lattes.cnpq.br/9941773528712076" target="_blank">Tiago França - Orientador</a></li>
+            </ul>
+            <ul>
+              <h3 class="title is-size-4">Equipe de Especialistas:</h3>
               <li><a href="http://lattes.cnpq.br/8813744643679880" target="_blank">Adilis França - Doutora</a></li>
               <li><a href="http://lattes.cnpq.br/8258110098411280" target="_blank">Laura Primo - Doutora</a></li>
               <li><a href="http://lattes.cnpq.br/8945163050246047" target="_blank">Mariana Sancas - Doutoranda</a></li>
@@ -64,15 +68,31 @@ footer {
   padding-bottom: 1.5rem;
 }
 
-h2, p, p>* {
+h2, h3, p, p>* {
   color: #fff;
 }
 
-.faculdades, .equipe {
+.faculdades {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: last baseline;
+}
+
+.equipe {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: last top;
+
+}
+
+.equipe > ul {
+  margin: 0px 10px;
+}
+
+.equipe > ul > h3 {
+  margin-bottom: 5px;
 }
 
 .equipe a {
